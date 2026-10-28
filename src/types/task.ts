@@ -6,5 +6,8 @@ type Task = {
     priority: "low" | "medium" | "high";
     createdAt: string;
 };
+
+type NewTask = Omit<Task, "id" | "status" | "createdAt">;
+
 export type TaskFilter = Task["status"] | "all";
-export type { Task };
+export type { Task, NewTask };

@@ -1,9 +1,10 @@
 import TaskList from "./components/TaskList";
 import "./App.css";
 import { useState } from "react";
-import type { TaskFilter } from "./types/task";
+import type { NewTask, TaskFilter } from "./types/task";
 import type { Task } from "./types/task";
 import { tasks as initialTasks } from "./data/tasks";
+import TaskForm from "./components/taskForm/TaskForm";
 
 function changeTaskStatus(
     tasks: Task[],
@@ -26,6 +27,21 @@ function App() {
     ): void {
         setTasks((prevTasks) => changeTaskStatus(prevTasks, taskId, newStatus));
     }
+
+    function handleAddTask(newTask: NewTask) {
+        const task: Task = {
+            ...newTask,
+            id: Date.now().toString(),
+            status: "toDo",
+            createdAt:
+                new Date().getFullYear() +
+                "-" +
+                String(new Date().getMonth() + 1).padStart(2, "0") +
+                "-" +
+                String(new Date().getDate()).padStart(2, "0"),
+        };
+        setTasks((prevTasks) => [...prevTasks, task]);
+    }
     return (
         <main>
             <h1>DevBoard</h1>
@@ -38,6 +54,7 @@ function App() {
                 tasks={tasks}
                 onChangeTaskStatus={handleChangeTaskStatus}
             />
+            <TaskForm onAddTask={handleAddTask} />
         </main>
     );
 }
